@@ -31,3 +31,4 @@ experimental=True
 deprecated=False
 qgisMaximumVersion=3.99
 plugin_dependencies=
+license=GPL-3
