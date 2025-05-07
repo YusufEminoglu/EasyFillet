@@ -1,0 +1,13 @@
+[general]
+name=EasyFillet
+email=yusuf.eminoglu@deu.edu.tr
+author=Yusuf EMİNOĞLU AND Zehra GÜN
+qgisMinimumVersion=3.0
+description=EasyFillet is a CAD-like fillet tool for QGIS, allowing you to create true tangent arcs and trimmed lines between two segments, just like in professional CAD software. The plugin is part of the 'planX' suite—a comprehensive set of tools for city planning, Turkish zoning rules, and urban design workflows.
+about=EasyFillet provides a CAD-like workflow for filleting two line segments in QGIS. Select two lines, preview the fillet, and the plugin will create a true tangent arc and trimmed lines, all meeting at a perfect node. This plugin is part of the planX suite for Turkish city planning and zoning.
+version=1.0
+tracker=https://github.com/YusufEminoglu/EasyFillet/issues
+repository=https://github.com/YusufEminoglu/EasyFillet
+category=Vector
+icon=icon.png
+tags=fillet,arc,cad,planx,city planning,zoning
