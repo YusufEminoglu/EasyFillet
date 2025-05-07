@@ -1,13 +1,33 @@
+; the next section is mandatory
+
 [general]
 name=EasyFillet
 email=yusuf.emnglu@gmail.com
-author=Yusuf Eminoglu
+author=Yusuf Eminoglu
 qgisMinimumVersion=3.0
-description=EasyFillet is a CAD-like fillet tool for QGIS, allowing you to create true tangent arcs and trimmed lines between two segments, just like in professional CAD software. The plugin is part of the 'planX' suite—a comprehensive set of tools for city planning, Turkish zoning rules, and urban design workflows.
-about=EasyFillet provides a CAD-like workflow for filleting two line segments in QGIS. Select two lines, preview the fillet, and the plugin will create a true tangent arc and trimmed lines, all meeting at a perfect node. This plugin is part of the planX suite for Turkish city planning and zoning.
-version= version 1.2
-tracker= https://github.com/YusufEminoglu/EasyFillet
+description=EasyFillet is a CAD‑like fillet tool for QGIS, allowing you to create true
+    tangent arcs and trimmed lines between two segments—just like in professional
+    CAD software. The plugin belongs to the “planX” suite, a comprehensive
+    collection of tools for city‑planning workflows, Turkish zoning rules and
+    urban‑design tasks.
+about=EasyFillet lets you pick two line segments, preview a radius, and instantly
+    generate a precise tangent arc while trimming the originals so they meet at a
+    perfect node. It streamlines drafting‑grade editing inside QGIS and supports
+    planX’s broader urban‑planning tool‑chain.
+version=version 1.2
+tracker=https://github.com/YusufEminoglu/EasyFillet/issues
 repository=https://github.com/YusufEminoglu/EasyFillet
+; end of mandatory metadata
+
+; start of optional metadata
 category=Vector
+changelog=1.2 – Added numeric‑radius dialog and chord‑length preview  
+    1.1 – Fixed snapping‑tolerance bug for mixed CRS layers  
+    1.0 – Initial stable release
+tags=fillet,arc,cad,planx,city planning,zoning,vector editing
+homepage=https://github.com/YusufEminoglu/EasyFillet
 icon=icon.png
-tags=fillet,arc,cad,planx,city planning,zoning
+experimental=True
+deprecated=False
+qgisMaximumVersion=3.99
+plugin_dependencies=
