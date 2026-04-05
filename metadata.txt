@@ -1,5 +1,4 @@
 ; the next section is mandatory
-
 [general]
 name=EasyFillet
 email=yusuf.emnglu@gmail.com
@@ -7,21 +6,21 @@ author=Yusuf Eminoglu
 qgisMinimumVersion=3.0
 description=EasyFillet is a CAD-like fillet tool for QGIS, allowing you to create true tangent arcs and trimmed lines between two segments. The plugin belongs to the PlanX suite.
 about=EasyFillet lets you pick two line segments, preview a radius, and instantly generate a precise tangent arc while trimming the originals so they meet at a perfect node. It streamlines drafting-grade editing inside QGIS and supports PlanX's broader urban-planning tool-chain.
-version=1.2.0
+version=1.3.0
 tracker=https://github.com/YusufEminoglu/EasyFillet/issues
 repository=https://github.com/YusufEminoglu/EasyFillet
 ; end of mandatory metadata
 
 ; start of optional metadata
 category=Vector
-changelog=1.2.0 - Added numeric-radius dialog, chord-length preview and right-click extend logic
-    1.1.0 - Fixed snapping-tolerance bug for mixed CRS layers
-    1.0.0 - Initial stable release
+changelog=
+    1.3.0 - NEW FEATURE: Added right-click 'Extend' logic. Now you can right-click to switch to Extend Mode, choose an endpoint and shoot it to intersect another line. 
+    1.2.0 - Added numeric-radius dialog and chord-length preview.
+    1.1.0 - Fixed snapping-tolerance bug for mixed CRS layers.
 tags=fillet,arc,cad,planx,city planning,zoning,vector editing
 homepage=https://github.com/YusufEminoglu/EasyFillet
 icon=icon.png
 experimental=False
 deprecated=False
 qgisMaximumVersion=3.99
-plugin_dependencies=
 license=GPL-3
