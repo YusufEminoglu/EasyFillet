@@ -45,6 +45,6 @@ EasyFillet lets you pick two line segments, set a radius, preview a chord-length
 
 ## Author
 
-**Yusuf Eminoglu** — [GitHub](https://github.com/YusufEminoglu) | geospacephilo@gmail.com
+**Yusuf Eminoglu** — [GitHub](https://github.com/YusufEminoglu) | yusuf.eminoglu@deu.edu.tr
 
 Part of the **[PlanX](https://github.com/YusufEminoglu/PlanX)** urban planning plugin suite.
