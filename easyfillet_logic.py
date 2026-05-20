@@ -86,24 +86,36 @@ def create_fillet_and_trims(geom1, geom2, radius):
     center = QgsPointXY(inter_pt.x() + math.cos(bisec)*center_dist,
                         inter_pt.y() + math.sin(bisec)*center_dist)
 
-    # Generate arc points
+    # Generate arc points along the SHORTEST signed difference between a1 and
+    # a2 (previously this code unconditionally added 2π to a2 when it was less
+    # than a1, which forced a counter-clockwise sweep and produced a 270° arc
+    # for a 90° corner in half the configurations).
     def angle_of(p):
         return math.atan2(p.y() - center.y(), p.x() - center.x())
+
     a1 = angle_of(tp1)
     a2 = angle_of(tp2)
-    if a2 < a1:
-        a2 += 2*math.pi
+    diff = a2 - a1
+    while diff > math.pi:
+        diff -= 2 * math.pi
+    while diff <= -math.pi:
+        diff += 2 * math.pi
+
     segments = 20
-    arc_pts = [QgsPointXY(center.x() + radius*math.cos(a1 + (a2-a1)*i/segments),
-                          center.y() + radius*math.sin(a1 + (a2-a1)*i/segments))
-               for i in range(segments+1)]
-    # Ensure arc endpoints are exactly tp1 and tp2
+    arc_pts = [
+        QgsPointXY(center.x() + radius * math.cos(a1 + diff * i / segments),
+                   center.y() + radius * math.sin(a1 + diff * i / segments))
+        for i in range(segments + 1)
+    ]
+    # Ensure arc endpoints are exactly tp1 and tp2 (float drift fixup).
     arc_pts[0] = tp1
     arc_pts[-1] = tp2
     return {
         'arc': QgsGeometry.fromPolylineXY(arc_pts),
         'tp1': tp1,
-        'tp2': tp2
+        'tp2': tp2,
+        'center': center,
+        'angle_rad': abs(diff),
     }
 
 
