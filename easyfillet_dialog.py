@@ -43,7 +43,7 @@ class EasyFilletDialog(QDialog):
         f.setBold(True)
         f.setPointSize(11)
         header.setFont(f)
-        header.setAlignment(Qt.AlignCenter)
+        header.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(header)
 
         helper = QLabel(
@@ -100,7 +100,7 @@ class EasyFilletDialog(QDialog):
         # Provide a tiny shim so any third-party hook continues to work.
         self.radiusLineEdit = _RadiusLineEditShim(self.spn_radius)
 
-        buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)

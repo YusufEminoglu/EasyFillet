@@ -43,10 +43,10 @@ from .easyfillet_logic import create_fillet_and_trims, trim_line_to_point
 _FILLET_PEN = "#3ad6a1"
 _FILLET_BRUSH = "#f0c2d3"
 _EXTEND_PEN = "#876582"
-_FIRST_LINE_RGB = Qt.blue
-_PREVIEW_RGB = Qt.red
-_NODE_RGB = Qt.green
-_TARGET_RGB = Qt.red
+_FIRST_LINE_RGB = Qt.GlobalColor.blue
+_PREVIEW_RGB = Qt.GlobalColor.red
+_NODE_RGB = Qt.GlobalColor.green
+_TARGET_RGB = Qt.GlobalColor.red
 
 
 def _single_line_pts(geom: QgsGeometry):
@@ -119,7 +119,7 @@ class FilletMapTool(QgsMapToolEmitPoint):
     def _set_cursor(self, mode: str) -> None:
         size = 32
         pixmap = QPixmap(size, size)
-        pixmap.fill(Qt.transparent)
+        pixmap.fill(Qt.GlobalColor.transparent)
         painter = QPainter(pixmap)
         if mode == self.MODE_EXTEND:
             pen = QPen(QColor(_EXTEND_PEN))
@@ -138,9 +138,9 @@ class FilletMapTool(QgsMapToolEmitPoint):
     # ───────────────────────── keyboard ─────────────────────────
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Space:
+        if event.key() == Qt.Key.Key_Space:
             self.plugin.open_dialog()
-        elif event.key() == Qt.Key_Escape:
+        elif event.key() == Qt.Key.Key_Escape:
             self.reset()
             self.iface.messageBar().pushMessage(
                 "EasyFillet", "Selection cleared", Qgis.Info, 2
@@ -165,11 +165,11 @@ class FilletMapTool(QgsMapToolEmitPoint):
     # ───────────────────────── canvas events ─────────────────────────
 
     def canvasPressEvent(self, event):
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self._toggle_mode()
             return
 
-        if event.button() != Qt.LeftButton:
+        if event.button() != Qt.MouseButton.LeftButton:
             return
 
         layer = self.iface.activeLayer()
@@ -484,9 +484,9 @@ class EasyFillet:
             ret = QMessageBox.question(
                 self.iface.mainWindow(), "EasyFillet",
                 "Layer is not in editing mode. Enable editing?",
-                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             )
-            if ret == QMessageBox.Yes:
+            if ret == QMessageBox.StandardButton.Yes:
                 layer.startEditing()
             else:
                 return
@@ -499,7 +499,7 @@ class EasyFillet:
 
     def open_dialog(self) -> bool:
         dlg = EasyFilletDialog(self.iface.mainWindow(), default_radius=self.radius)
-        if dlg.exec_() != EasyFilletDialog.Accepted:
+        if dlg.exec() != EasyFilletDialog.DialogCode.Accepted:
             return False
         v = dlg.values()
         self.radius = v["radius"]
