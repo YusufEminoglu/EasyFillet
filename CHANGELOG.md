@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.3] - 2026-05-26
+
+- Maintenance release: validated on QGIS 3.40+/4, packaging refresh, and stability improvements.
+
 ## [1.4.2] - 2026-05-26
 
 - Maintenance release: refreshed Plugin Hub package after QGIS 3 and QGIS 4 compatibility validation.
