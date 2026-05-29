@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.4] - 2026-05-30
+
+- Revised plugin icon to SVG
+
 ## [1.4.3] - 2026-05-26
 
 - Maintenance release: validated on QGIS 3.40+/4, packaging refresh, and stability improvements.

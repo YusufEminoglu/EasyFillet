@@ -25,9 +25,11 @@ from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon, QCursor, QPixmap, QColor, QPainter, QPen
 from qgis.PyQt.QtWidgets import QAction, QMessageBox
 from qgis.core import (
+    QgsCoordinateTransform,
     QgsFeature,
     QgsGeometry,
     QgsPointXY,
+    QgsProject,
     QgsRectangle,
     QgsSpatialIndex,
     QgsWkbTypes,
@@ -47,6 +49,10 @@ _FIRST_LINE_RGB = Qt.GlobalColor.blue
 _PREVIEW_RGB = Qt.GlobalColor.red
 _NODE_RGB = Qt.GlobalColor.green
 _TARGET_RGB = Qt.GlobalColor.red
+
+
+def _is_line_layer(layer) -> bool:
+    return bool(layer and layer.geometryType() == Qgis.GeometryType.Line)
 
 
 def _single_line_pts(geom: QgsGeometry):
@@ -173,7 +179,7 @@ class FilletMapTool(QgsMapToolEmitPoint):
             return
 
         layer = self.iface.activeLayer()
-        if not layer or layer.geometryType() != QgsWkbTypes.LineGeometry:
+        if not _is_line_layer(layer):
             return
 
         pt = self._snap(event)
@@ -196,7 +202,7 @@ class FilletMapTool(QgsMapToolEmitPoint):
             return
 
         layer = self.iface.activeLayer()
-        if not layer or layer.geometryType() != QgsWkbTypes.LineGeometry:
+        if not _is_line_layer(layer):
             return
 
         pt = self._snap(event)
@@ -476,7 +482,7 @@ class EasyFillet:
 
     def activate_tool(self) -> None:
         layer = self.iface.activeLayer()
-        if not layer or layer.geometryType() != QgsWkbTypes.LineGeometry:
+        if not _is_line_layer(layer):
             QMessageBox.warning(self.iface.mainWindow(), "EasyFillet",
                                 "Please activate a line layer.")
             return
@@ -540,20 +546,33 @@ class EasyFillet:
         precisely against each one.
         """
         index = self._get_spatial_index(layer)
-        upp = self.iface.mapCanvas().mapUnitsPerPixel() or 1.0
+        layer_point = self._point_in_layer_crs(layer, point)
+
+        # Prefer NN lookup first: stable across DPI/canvas differences in QGIS 3/4.
         candidates = []
-        for px in (10, 50, 250, 2000):
-            r = upp * px
-            rect = QgsRectangle(point.x() - r, point.y() - r,
-                                point.x() + r, point.y() + r)
-            candidates = index.intersects(rect)
-            if exclude_fid is not None:
-                candidates = [fid for fid in candidates if fid != exclude_fid]
-            if candidates:
-                break
+        try:
+            candidates = list(index.nearestNeighbor(layer_point, 24))
+        except Exception:
+            candidates = []
+        if exclude_fid is not None and candidates:
+            candidates = [fid for fid in candidates if fid != exclude_fid]
+
+        # Fallback to bbox expansion if NN yields nothing.
+        if not candidates:
+            upp = self.iface.mapCanvas().mapUnitsPerPixel() or 1.0
+            fallback_r = max(upp * 2000, 1.0)
+            for mul in (1.0, 4.0, 16.0):
+                r = fallback_r * mul
+                rect = QgsRectangle(layer_point.x() - r, layer_point.y() - r,
+                                    layer_point.x() + r, layer_point.y() + r)
+                candidates = index.intersects(rect)
+                if exclude_fid is not None:
+                    candidates = [fid for fid in candidates if fid != exclude_fid]
+                if candidates:
+                    break
         if not candidates:
             return None
-        point_geom = QgsGeometry.fromPointXY(point)
+        point_geom = QgsGeometry.fromPointXY(layer_point)
         nearest_feat = None
         nearest_dist = float("inf")
         for fid in candidates:
@@ -568,6 +587,32 @@ class EasyFillet:
                 nearest_dist = d
                 nearest_feat = feat
         return nearest_feat
+
+    def _point_in_layer_crs(self, layer, point: QgsPointXY) -> QgsPointXY:
+        """Transform a canvas/map point to layer CRS if needed.
+
+        QGIS 4 projects commonly keep a global map CRS while editing layers in
+        local projected CRSs. Without this transform the nearest-feature lookup
+        can miss every candidate, so preview/edit appears to do nothing.
+        """
+        if layer is None or point is None:
+            return point
+        try:
+            canvas = self.iface.mapCanvas()
+            map_crs = canvas.mapSettings().destinationCrs() if canvas else None
+            layer_crs = layer.crs() if hasattr(layer, "crs") else None
+            if (
+                map_crs is not None
+                and layer_crs is not None
+                and map_crs.isValid()
+                and layer_crs.isValid()
+                and map_crs != layer_crs
+            ):
+                transform = QgsCoordinateTransform(map_crs, layer_crs, QgsProject.instance())
+                return transform.transform(point)
+        except Exception:
+            pass
+        return point
 
     # ───────────────────────── geometry helpers ─────────────────────────
 
