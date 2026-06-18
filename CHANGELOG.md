@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.6] - 2026-06-18
+
+- docs: add CITATION.cff for Zenodo DOI integration
+
+## [1.4.5] - 2026-06-18
+
+- Added CITATION.cff for Zenodo DOI integration
+
 ## [1.4.4] - 2026-05-30
 
 - Revised plugin icon to SVG
