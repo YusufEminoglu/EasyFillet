@@ -525,13 +525,12 @@ class EasyFillet:
         def _invalidate(*_args):
             self._index_cache.pop(layer.id(), None)
 
-        try:
+        from contextlib import suppress
+        with suppress(Exception):
             layer.geometryChanged.connect(_invalidate)
             layer.featureAdded.connect(_invalidate)
             layer.featuresDeleted.connect(_invalidate)
             layer.editingStopped.connect(_invalidate)
-        except Exception:
-            pass
 
         self._index_cache[layer.id()] = index
         return index
@@ -597,7 +596,8 @@ class EasyFillet:
         """
         if layer is None or point is None:
             return point
-        try:
+        from contextlib import suppress
+        with suppress(Exception):
             canvas = self.iface.mapCanvas()
             map_crs = canvas.mapSettings().destinationCrs() if canvas else None
             layer_crs = layer.crs() if hasattr(layer, "crs") else None
@@ -610,8 +610,6 @@ class EasyFillet:
             ):
                 transform = QgsCoordinateTransform(map_crs, layer_crs, QgsProject.instance())
                 return transform.transform(point)
-        except Exception:
-            pass
         return point
 
     # ───────────────────────── geometry helpers ─────────────────────────

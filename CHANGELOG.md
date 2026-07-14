@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.7] - 2026-07-14
+
+- Add radius validation and fix security warnings
+
 ## [1.4.6] - 2026-06-18
 
 - docs: add CITATION.cff for Zenodo DOI integration

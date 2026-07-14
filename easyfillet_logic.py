@@ -77,8 +77,19 @@ def create_fillet_and_trims(geom1, geom2, radius):
 
     # Tangent length from intersection
     tan_len = radius / math.tan(angle/2)
-    tp1 = QgsPointXY(inter_pt.x() + v1[0]*tan_len, inter_pt.y() + v1[1]*tan_len)
-    tp2 = QgsPointXY(inter_pt.x() + v2[0]*tan_len, inter_pt.y() + v2[1]*tan_len)
+
+    # Check if tangent point exceeds segment length from intersection
+    far1 = pts1[-1] if i1 == 0 else pts1[0]
+    far2 = pts2[-1] if i2 == 0 else pts2[0]
+    len1 = QgsPointXY(far1).distance(inter_pt)
+    len2 = QgsPointXY(far2).distance(inter_pt)
+    if tan_len > len1 or tan_len > len2:
+        return None
+
+    tp1 = QgsPointXY(inter_pt.x() + v1[0]*tan_len,
+                     inter_pt.y() + v1[1]*tan_len)
+    tp2 = QgsPointXY(inter_pt.x() + v2[0]*tan_len,
+                     inter_pt.y() + v2[1]*tan_len)
 
     # Compute circle center
     bisec = math.atan2(v1[1] + v2[1], v1[0] + v2[0])

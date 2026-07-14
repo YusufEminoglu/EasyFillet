@@ -136,7 +136,6 @@ class _RadiusLineEditShim:
         return f"{self._spn.value():.6g}"
 
     def setText(self, value) -> None:
-        try:
+        from contextlib import suppress
+        with suppress(TypeError, ValueError):
             self._spn.setValue(float(value))
-        except (TypeError, ValueError):
-            pass
