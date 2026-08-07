@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.8] - 2026-08-07
+
+- Add comprehensive academic reference manual
+
 ## [1.4.7] - 2026-07-14
 
 - Add radius validation and fix security warnings
