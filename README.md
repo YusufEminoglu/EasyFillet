@@ -16,6 +16,11 @@
 
 ---
 
+## 📖 Documentation
+
+**[Comprehensive Academic Reference Manual](https://yusufeminoglu.github.io/EasyFillet/)** — complete documentation of every feature, parameter, and workflow. Hosted on GitHub Pages.
+
+
 ## Why EasyFillet?
 
 Rounding a corner between two line segments in plain QGIS means manual arc construction and tedious trimming. EasyFillet brings the drafting-grade fillet operation straight into QGIS vector editing: pick two segments, set a radius, and get a precise tangent arc with both source lines trimmed to meet it at a clean node.
