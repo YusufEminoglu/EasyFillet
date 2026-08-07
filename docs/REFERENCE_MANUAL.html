@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EasyFillet &mdash; Reference Manual</title>
+<style>
+:root {
+  --bg: #fafaf8;
+  --sidebar-bg: #f3f3f0;
+  --text: #1a1a1a;
+  --muted: #5a5a55;
+  --accent: #2a6e5e;
+  --border: #d8d5ce;
+  --card-bg: #fff;
+  --link: #1a6e5e;
+  --code-bg: #edf4f2;
+  --search-bg: #fff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; display: flex; min-height: 100vh; }
+#sidebar { width: 270px; min-width: 270px; background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+#sidebar h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
+#search { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: var(--search-bg); margin-bottom: 20px; }
+#sidebar nav a { display: block; padding: 5px 0; font-size: 13px; color: var(--link); text-decoration: none; border-radius: 4px; }
+#sidebar nav a:hover { text-decoration: underline; }
+#sidebar nav a.sub { padding-left: 14px; font-size: 12px; }
+#main { flex: 1; padding: 40px 48px; max-width: 860px; }
+h1 { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+h1 + p { color: var(--muted); margin-bottom: 32px; }
+h2 { font-size: 20px; font-weight: 600; color: var(--accent); margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
+h3 { font-size: 16px; font-weight: 600; color: var(--text); margin: 20px 0 8px; }
+p, li { font-size: 14px; color: var(--text); }
+p { margin-bottom: 10px; }
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+.card h4 { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+ul { margin: 4px 0 10px 20px; }
+li { margin-bottom: 3px; }
+code, .k { font-family: Consolas, 'Courier New', monospace; background: var(--code-bg); padding: 1px 6px; border-radius: 3px; font-size: 13px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+th, td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; }
+th { background: var(--code-bg); font-weight: 600; }
+.refs { font-size: 12px; color: var(--muted); }
+.refs a { color: var(--link); }
+@media (max-width: 760px) { body { flex-direction: column; } #sidebar { width: 100%; min-width: auto; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); } #main { padding: 24px; } }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<aside id="sidebar">
+  <input type="text" id="search" placeholder="Search manual&hellip;" autocomplete="off">
+  <h2>Contents</h2>
+  <nav id="toc">
+    <a href="#overview">Overview</a>
+    <a href="#features" class="sub">Features</a>
+    <a href="#params" class="sub">Parameters</a>
+    <a href="#workflow" class="sub">Workflow</a>
+    <a href="#geometry" class="sub">Geometry Engine</a>
+    <a href="#technical" class="sub">Technical Notes</a>
+    <a href="#literature">Literature</a>
+  </nav>
+</aside>
+<main id="main">
+<h1>EasyFillet</h1>
+<p>CAD-grade tangent arc and line extension tool for QGIS &bull; v1.4.7</p>
+
+<h2 id="overview">1. Overview</h2>
+<p>EasyFillet brings AutoCAD-style <em>FILLET</em> and <em>EXTEND</em> commands into QGIS for geospatial vector editing. Given two line features, the plugin computes a circular tangent arc that smooths the corner between them, trims both source lines to the tangent points, and inserts the arc as a new feature. An Extend mode lengthens a line endpoint to a cursor target with live preview. The tool operates in-place on editable line layers with full CRS awareness, a spatial-index-backed nearest-feature lookup, and persistent parameter memory.</p>
+<p>EasyFillet is a dock-free, toolbar-activated interactive map tool. It has no processing provider or model builder integration&mdash;it works directly on the QGIS map canvas.</p>
+
+<h2 id="features">2. Feature Documentation</h2>
+
+<h3>2.1 Fillet Mode</h3>
+<div class="card">
+  <h4>Tangent Arc Insertion</h4>
+  <p>Two-click workflow: pick the first line, then the second. The plugin computes the intersection of the two lines, determines the tangent points at the specified radius, generates a circular arc, and trims both lines back to the tangent points. The arc is added as a new feature inheriting attributes from the first line.</p>
+  <p>A live red <code>QgsRubberBand</code> preview shows the arc as the cursor hovers over candidate second lines, using the current radius setting.</p>
+</div>
+
+<div class="card">
+  <h4>In-Place Trimming (default)</h4>
+  <p>Source line geometries are updated via <code>layer.changeGeometry()</code> so their endpoints precisely meet the arc's tangent points. No duplicate features are created. This is the v1.4 default behaviour.</p>
+  <p>Unchecking <em>Trim originals in place</em> restores the legacy additive mode where original features are preserved and three new features (arc + two trimmed copies) are added&mdash;useful for scripting compatibility.</p>
+</div>
+
+<h3>2.2 Extend Mode</h3>
+<div class="card">
+  <h4>Endpoint Extension</h4>
+  <p>Right-click toggles between Fillet and Extend modes. In Extend mode, click near a line endpoint (within the configurable pixel tolerance), then click a target location. The line geometry is updated in-place so its endpoint moves to the target point. Snap-to-endpoint is automatically applied when hovering near another line's endpoint.</p>
+</div>
+
+<h3>2.3 Spatial Index Lookup</h3>
+<div class="card">
+  <h4>Nearest-Feature Query</h4>
+  <p>A per-layer <code>QgsSpatialIndex</code> is built lazily, queried for ~24 nearest candidates per mouse-move, and invalidated automatically on geometry changes, feature additions/deletions, and editing stop signals. Falls back to expanding bounding-box probes when the index returns empty. CRS-transforms the map point to layer CRS before querying.</p>
+</div>
+
+<h2 id="params">3. Parameters and Controls</h2>
+<table>
+  <tr><th>Parameter</th><th>Type</th><th>Range</th><th>Default</th><th>Description</th></tr>
+  <tr><td>Radius</td><td>QDoubleSpinBox</td><td>0.001 &ndash; 1,000,000 m</td><td>4.0 m</td><td>Arc radius; smaller values suit tight corners</td></tr>
+  <tr><td>Endpoint tolerance</td><td>QSpinBox</td><td>5 &ndash; 200 px</td><td>30 px</td><td>Snap radius for Extend mode endpoint detection</td></tr>
+  <tr><td>Arc segments</td><td>QSpinBox</td><td>4 &ndash; 200</td><td>24</td><td>Polyline resolution of generated arc; more = smoother</td></tr>
+  <tr><td>Trim originals in place</td><td>QCheckBox</td><td>on / off</td><td>on</td><td>When on: replaces source geometries; off: legacy additive mode</td></tr>
+</table>
+<p>All parameter values are persisted across QGIS sessions via <code>QSettings</code> under <code>PlanX/EasyFillet</code>. Press <span class="k">Space</span> at any time during tool use to reopen the dialog.</p>
+
+<h2 id="workflow">4. Workflow Guide</h2>
+<h3>4.1 Fillet Mode</h3>
+<ol>
+  <li>Click the EasyFillet toolbar icon. The plugin checks the active layer is an editable line layer (offers to start editing if not). The parameter dialog opens.</li>
+  <li>Set the desired radius and click OK.</li>
+  <li>Click the first line feature. It highlights in blue.</li>
+  <li>Move the mouse over a second line. A red preview arc appears at the corner.</li>
+  <li>Click the second line. The fillet is applied and a success message reports the radius and corner angle.</li>
+  <li>The tool remains active for further operations.</li>
+</ol>
+
+<h3>4.2 Extend Mode</h3>
+<ol>
+  <li>Right-click to toggle to Extend Mode (purple cursor). The status bar reads &ldquo;Extend Mode.&rdquo;</li>
+  <li>Click near a line endpoint (within the tolerance). The endpoint highlights in green and the line in blue.</li>
+  <li>Move the cursor to the target location. A red preview line and red target marker show the proposed extension.</li>
+  <li>Click to commit. The line geometry is updated in-place.</li>
+</ol>
+
+<h3>4.3 Keyboard Shortcuts</h3>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr><td><span class="k">Space</span></td><td>Reopen parameter dialog</td></tr>
+  <tr><td><span class="k">Escape</span></td><td>Clear current selection without exiting tool</td></tr>
+  <tr><td><span class="k">Right-click</span></td><td>Toggle between Fillet and Extend modes</td></tr>
+</table>
+
+<h2 id="geometry">5. Geometry Engine</h2>
+<p>The core computation in <code>easyfillet_logic.py</code> uses three pure functions with no QGIS dependency beyond <code>QgsGeometry</code> and <code>QgsPointXY</code>:</p>
+
+<h3>5.1 Fillet Arc Geometry</h3>
+<p>Given two infinite lines defined by their segment endpoints, the algorithm:</p>
+<ol>
+  <li>Finds the intersection point of the two lines (parallel-line rejection when the denominator is within 1&times;10<sup>&minus;12</sup> of zero).</li>
+  <li>Determines which endpoint of each polyline approaches the corner.</li>
+  <li>Computes unit direction vectors from the intersection toward those endpoints.</li>
+  <li>Derives the angle between direction vectors via dot product and <code>acos()</code>.</li>
+  <li>Calculates tangent length: <code>tan_len = radius / tan(&theta; / 2)</code>.</li>
+  <li>Validates that neither tangent point falls beyond its segment's far endpoint.</li>
+  <li>Places tangent points at distance <code>tan_len</code> from the intersection along each direction.</li>
+  <li>Computes the circle centre by walking along the angle bisector at distance <code>radius / sin(&theta; / 2)</code>.</li>
+  <li>Shortest-arc fix: clamps the angular difference to (&minus;&pi;, &pi;] to avoid 270&deg; counter-clockwise sweeps.</li>
+  <li>Generates arc points as a polyline approximation.</li>
+</ol>
+
+<h3>5.2 Line Trimming</h3>
+<p><code>trim_line_to_point()</code> determines whether the tangent point is closer to the start or end of the polyline and replaces that endpoint with the tangent point.</p>
+
+<h2 id="technical">6. Technical Notes</h2>
+<ul>
+  <li><strong>CRS handling:</strong> All spatial-index queries transform the canvas point to the layer's CRS via <code>QgsCoordinateTransform</code>, supporting mixed-CRS projects.</li>
+  <li><strong>Cursor design:</strong> Custom 32&times;32 px <code>QPixmap</code> cursors drawn with <code>QPainter</code>&mdash;teal-green pen for Fillet mode, purple for Extend mode.</li>
+  <li><strong>Spatial index invalidation:</strong> Four layer signals (<code>geometryChanged</code>, <code>featureAdded</code>, <code>featuresDeleted</code>, <code>editingStopped</code>) trigger index rebuild.</li>
+  <li><strong>Cleanup:</strong> <code>unload()</code> calls <code>canvas.unsetMapTool()</code> before clearing the reference to prevent dangling-pointer crashes.</li>
+  <li><strong>Geometry normalisation:</strong> Multi-part geometries use the first part. Features with fewer than 2 points are rejected.</li>
+  <li><strong>Feature attributes:</strong> The "fid" column is explicitly nulled on new features so QGIS auto-assigns a unique feature ID.</li>
+  <li><strong>QGIS compatibility:</strong> 3.0 through 4.99. Pure <code>qgis.core</code> / <code>qgis.gui</code> / <code>qgis.PyQt</code> with no external dependencies.</li>
+</ul>
+
+<h2 id="literature">7. Literature</h2>
+<ol class="refs">
+  <li>Farin, G. (2002). <em>Curves and Surfaces for CAGD: A Practical Guide</em> (5th ed.). Morgan Kaufmann. <a href="https://doi.org/10.1016/B978-1-55860-737-8.X5000-5">DOI: 10.1016/B978-1-55860-737-8.X5000-5</a></li>
+  <li>Nielson, G. M. (1993). Scattered data modeling. <em>IEEE Computer Graphics and Applications</em>, 13(1), 60&ndash;70. <a href="https://doi.org/10.1109/38.180122">DOI: 10.1109/38.180122</a></li>
+  <li>de Berg, M., Cheong, O., van Kreveld, M., &amp; Overmars, M. (2008). <em>Computational Geometry: Algorithms and Applications</em> (3rd ed.). Springer. <a href="https://doi.org/10.1007/978-3-540-77974-2">DOI: 10.1007/978-3-540-77974-2</a></li>
+  <li>Guttman, A. (1984). R-trees: a dynamic index structure for spatial searching. <em>Proceedings of the 1984 ACM SIGMOD International Conference on Management of Data</em>, 47&ndash;57. <a href="https://doi.org/10.1145/602259.602266">DOI: 10.1145/602259.602266</a></li>
+</ol>
+</main>
+
+<script>
+// Client-side search
+(function(){
+  var inp=document.getElementById('search');
+  var main=document.getElementById('main');
+  if(!inp||!main)return;
+  var all=main.querySelectorAll('h2,h3,p,li,td');
+  inp.addEventListener('input',function(){
+    var q=inp.value.trim().toLowerCase();
+    all.forEach(function(el){el.classList.remove('hidden');});
+    if(!q)return;
+    // Hide paragraphs and list items not matching
+    var sections=main.querySelectorAll('h2');
+    sections.forEach(function(h){
+      var section=h;
+      var keep=false;
+      if(h.textContent.toLowerCase().indexOf(q)!==-1)keep=true;
+      var next=section.nextElementSibling;
+      while(next && next.tagName!=='H2'){
+        if(next.textContent.toLowerCase().indexOf(q)!==-1)keep=true;
+        next=next.nextElementSibling;
+      }
+      if(!keep){
+        next=section.nextElementSibling;
+        while(next && next.tagName!=='H2'){
+          next.classList.add('hidden');
+          next=next.nextElementSibling;
+        }
+        section.classList.add('hidden');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
