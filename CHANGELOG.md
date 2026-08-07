@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.10] - 2026-08-07
+
+- Added online user manual link (https://yusufeminoglu.github.io/EasyFillet/) and GitHub repository star call-to-action.
+
 ## [1.4.9] - 2026-08-07
 
 - Add floating Save as PDF button to reference manual
