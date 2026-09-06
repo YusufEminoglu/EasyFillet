@@ -7,7 +7,7 @@
 **CAD-grade fillet for QGIS — true tangent arcs with live radius preview and automatic trimming. Part of the PlanX suite.**
 
 [![QGIS](https://img.shields.io/badge/QGIS-3.0%2B-93b023?logo=qgis&logoColor=white)](https://plugins.qgis.org/plugins/EasyFillet/)
-[![Documentation](https://img.shields.io/badge/📖_Reference_Manual-13a0a0)](https://geophilo.pages.dev/EasyFillet/)
+[![Documentation](https://img.shields.io/badge/📖_Reference_Manual-13a0a0)](https://geophilo.com/EasyFillet/)
 [![Version](https://img.shields.io/github/v/tag/YusufEminoglu/EasyFillet?label=version&color=blue)](https://gitlab.com/geospacephilo/EasyFillet/releases)
 [![License](https://img.shields.io/badge/license-GPL--3.0-orange)](LICENSE)
 [![QGIS Plugin Hub](https://img.shields.io/badge/QGIS%20Hub-install-589632?logo=qgis&logoColor=white)](https://plugins.qgis.org/plugins/EasyFillet/)
@@ -18,7 +18,7 @@
 
 ## 📖 Documentation
 
-**[Comprehensive Academic Reference Manual](https://geophilo.pages.dev/EasyFillet/)** — complete documentation of every feature, parameter, and workflow. Hosted on Web Documentation.
+**[Comprehensive Academic Reference Manual](https://geophilo.com/EasyFillet/)** — complete documentation of every feature, parameter, and workflow. Hosted on Web Documentation.
 
 
 ## Why EasyFillet?
