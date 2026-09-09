@@ -21,8 +21,8 @@ from __future__ import annotations
 import math
 import os
 
-from qgis.PyQt.QtCore import Qt
-from qgis.PyQt.QtGui import QIcon, QCursor, QPixmap, QColor, QPainter, QPen
+from qgis.PyQt.QtCore import Qt, QUrl
+from qgis.PyQt.QtGui import QColor, QCursor, QDesktopServices, QIcon, QPainter, QPen, QPixmap
 from qgis.PyQt.QtWidgets import QAction, QMessageBox
 from qgis.core import (
     QgsCoordinateTransform,
@@ -464,6 +464,13 @@ class EasyFillet:
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu("&EasyFillet", self.action)
 
+        self.rate_action = QAction("★ Rate EasyFillet...", self.iface.mainWindow())
+        self.rate_action.setToolTip("Rate & Review EasyFillet on GeoPhilo")
+        self.rate_action.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("https://geophilo.com/feedback/?plugin=EasyFillet&v=1.4.11"))
+        )
+        self.iface.addPluginToMenu("&EasyFillet", self.rate_action)
+
     def unload(self) -> None:
         # Detach the map tool BEFORE clearing our reference. v1.3 never did
         # this and left QGIS holding a dangling pointer that crashed on the
@@ -477,6 +484,9 @@ class EasyFillet:
             self.iface.removeToolBarIcon(self.action)
             self.iface.removePluginMenu("&EasyFillet", self.action)
             self.action = None
+        if getattr(self, "rate_action", None) is not None:
+            self.iface.removePluginMenu("&EasyFillet", self.rate_action)
+            self.rate_action = None
 
     # ───────────────────────── activation ─────────────────────────
 
