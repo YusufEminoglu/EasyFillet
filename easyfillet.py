@@ -454,7 +454,10 @@ class EasyFillet:
     # ───────────────────────── lifecycle ─────────────────────────
 
     def initGui(self) -> None:
-        icon = QIcon(os.path.join(self.plugin_dir, "icon.png"))
+        icon_path = os.path.join(self.plugin_dir, "icon.svg")
+        if not os.path.exists(icon_path):
+            icon_path = os.path.join(self.plugin_dir, "icon.png")
+        icon = QIcon(icon_path)
         self.action = QAction(icon, "EasyFillet", self.iface.mainWindow())
         self.action.setToolTip(
             "EasyFillet — pick two line features to insert a tangent arc. "
@@ -467,7 +470,7 @@ class EasyFillet:
         self.rate_action = QAction("★ Rate EasyFillet...", self.iface.mainWindow())
         self.rate_action.setToolTip("Rate & Review EasyFillet on GeoPhilo")
         self.rate_action.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://geophilo.com/feedback/?plugin=EasyFillet&v=1.4.11"))
+            lambda: QDesktopServices.openUrl(QUrl("https://geophilo.com/feedback/?plugin=EasyFillet&v=1.4.12"))
         )
         self.iface.addPluginToMenu("&EasyFillet", self.rate_action)
 

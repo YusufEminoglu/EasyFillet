@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.12] - 2026-09-12
+
+- Fix missing toolbar ribbon icon by loading SVG with PNG fallback
+
 ## [1.4.11] - 2026-09-06
 
 - Migrate repository and documentation URLs to GitLab and Cloudflare Pages.

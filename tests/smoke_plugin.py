@@ -167,6 +167,11 @@ def test_lifecycle(iface):
     app = QgsApplication.instance()
     app.processEvents()
 
+    icon_valid = (
+        plugin.action is not None
+        and not plugin.action.icon().pixmap(16, 16).isNull()
+    )
+
     plugin.unload()
     # unload() usually relies on deleteLater, which needs the event queue drained.
     app.sendPostedEvents()
@@ -175,11 +180,11 @@ def test_lifecycle(iface):
     toolbars_after = {tb.objectName() for tb in iface.mainWindow().findChildren(QToolBar)}
     leaked = toolbars_after - toolbars_before
     return _ok(
-        "initGui / unload leaves no toolbar, menu entry or dock behind",
-        not leaked and not iface.menu_entries and not iface.toolbar_icons
+        "initGui / unload leaves no toolbar, menu entry or dock behind (and icon is valid)",
+        icon_valid and not leaked and not iface.menu_entries and not iface.toolbar_icons
         and not iface.docks,
         f"toolbars={sorted(leaked)} menu={len(iface.menu_entries)} "
-        f"icons={len(iface.toolbar_icons)} docks={len(iface.docks)}",
+        f"icons={len(iface.toolbar_icons)} docks={len(iface.docks)} icon_valid={icon_valid}",
     )
 
 

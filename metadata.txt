@@ -5,15 +5,16 @@ email=yusuf.eminoglu@deu.edu.tr
 author=Yusuf Eminoglu
 qgisMinimumVersion=3.0
 description=EasyFillet is a CAD-like fillet tool for QGIS, allowing you to create true tangent arcs and trimmed lines between two segments. The plugin belongs to the PlanX suite.
-about=EasyFillet lets you pick two line segments, preview a radius, and instantly generate a precise tangent arc while trimming the originals so they meet at a perfect node. It streamlines drafting-grade editing inside QGIS and supports PlanX's broader urban-planning tool-chain. Developed with feedback from educational workflows at Dokuz Eylul University, Department of City and Regional Planning. Online User Manual & Documentation: https://geophilo.com/EasyFillet/ | If you find this plugin helpful, please consider starring the repository on GitLab (https://gitlab.com/geospacephilo/EasyFillet)!
-version=1.4.11
-tracker=https://gitlab.com/geospacephilo/EasyFillet/-/issues
-repository=https://gitlab.com/geospacephilo/EasyFillet
+about=EasyFillet lets you pick two line segments, preview a radius, and instantly generate a precise tangent arc while trimming the originals so they meet at a perfect node. It streamlines drafting-grade editing inside QGIS and supports PlanX's broader urban-planning tool-chain. Developed with feedback from educational workflows at Dokuz Eylul University, Department of City and Regional Planning. Online User Manual & Documentation: https://geophilo.com/EasyFillet/ | If you find this plugin helpful, please consider starring the repository on GitLab (https://gitlab.com/geophilo1/EasyFillet)!
+version=1.4.12
+tracker=https://gitlab.com/geophilo1/EasyFillet/-/issues
+repository=https://gitlab.com/geophilo1/EasyFillet
 ; end of mandatory metadata
 
 ; start of optional metadata
 category=Vector
 changelog=
+    EasyFillet 1.4.12 - Fixed missing toolbar ribbon icon by loading SVG with PNG fallback.
     EasyFillet 1.4.0 - Comprehensive correctness + UX revision (no new sub-panels, existing structure preserved).
         - Fixed shortest-arc bug: 90-degree corners now produce 90-degree arcs instead of the long 270-degree counter-clockwise sweep that v1.3 emitted half the time. The arc geometry walks the SIGNED shortest difference between the two tangent angles.
         - Fixed in-place trim: the source line features are now updated via layer.changeGeometry (canonical CAD behaviour). v1.3 added the trimmed pieces as NEW features and left the originals dangling, leaving five overlapping line features at every corner. A legacy checkbox in the dialog keeps the old behaviour for users who depend on it.
@@ -29,7 +30,7 @@ changelog=
     EasyFillet 1.1.0 - Fixed snapping tolerance behavior for mixed CRS layers.
 tags=fillet,arc,cad,planx,city planning,zoning,vector editing
 homepage=https://geophilo.com/EasyFillet/
-icon=icon.svg
+icon=icons/icon.png
 experimental=False
 deprecated=False
 qgisMaximumVersion=4.99
