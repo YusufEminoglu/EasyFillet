@@ -454,7 +454,7 @@ class EasyFillet:
     # ───────────────────────── lifecycle ─────────────────────────
 
     def initGui(self) -> None:
-        icon_path = os.path.join(self.plugin_dir, "icon.svg")
+        icon_path = os.path.join(self.plugin_dir, "icons", "icon.png")
         if not os.path.exists(icon_path):
             icon_path = os.path.join(self.plugin_dir, "icon.png")
         icon = QIcon(icon_path)
@@ -470,7 +470,7 @@ class EasyFillet:
         self.rate_action = QAction("★ Rate EasyFillet...", self.iface.mainWindow())
         self.rate_action.setToolTip("Rate & Review EasyFillet on GeoPhilo")
         self.rate_action.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://geophilo.com/feedback/?plugin=EasyFillet&v=1.4.12"))
+            lambda: QDesktopServices.openUrl(QUrl("https://geophilo.com/feedback/?plugin=EasyFillet&v=1.4.13"))
         )
         self.iface.addPluginToMenu("&EasyFillet", self.rate_action)
 

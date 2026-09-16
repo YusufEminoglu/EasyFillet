@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.13] - 2026-09-17
+
+- Upgraded official plugin icon to high-end tactile 3D brand identity (isometric 45°, slim teal pedestal, full bleed transparent canvas).
+- Prioritized high-resolution PNG icon loading in toolbar actions and QGIS interface.
+- Synchronized documentation, repository and issue tracker endpoints to GeoPhilo and GitLab.
+
 ## [1.4.12] - 2026-09-12
 
 - Fix missing toolbar ribbon icon by loading SVG with PNG fallback
