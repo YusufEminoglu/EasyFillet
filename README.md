@@ -9,7 +9,7 @@
 [![QGIS](https://img.shields.io/badge/QGIS-3.0%2B-93b023?logo=qgis&logoColor=white)](https://plugins.qgis.org/plugins/EasyFillet/)
 [![Documentation](https://img.shields.io/badge/📖_Reference_Manual-13a0a0)](https://geophilo.com/EasyFillet/)
 [![Version](https://img.shields.io/github/v/tag/YusufEminoglu/EasyFillet?label=version&color=blue)](https://gitlab.com/geophilo1/EasyFillet/releases)
-[![License](https://img.shields.io/badge/license-GPL--3.0-orange)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-orange)](LICENSE)
 [![QGIS Plugin Hub](https://img.shields.io/badge/QGIS%20Hub-install-589632?logo=qgis&logoColor=white)](https://plugins.qgis.org/plugins/EasyFillet/)
 
 </div>
@@ -66,4 +66,4 @@ This plugin is one of 15 open-source QGIS plugins for urban planning by the same
 
 ## 📜 License & author
 
-GPL-3.0 © [Yusuf Eminoğlu](https://github.com/YusufEminoglu) — bug reports and feature requests welcome in [Issues](https://gitlab.com/geophilo1/EasyFillet/-/issues).
+GPL-3.0-or-later © [Yusuf Eminoğlu](https://github.com/YusufEminoglu) — bug reports and feature requests welcome in [Issues](https://gitlab.com/geophilo1/EasyFillet/-/issues).

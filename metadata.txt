@@ -35,4 +35,4 @@ icon=icons/icon.png
 experimental=False
 deprecated=False
 qgisMaximumVersion=4.99
-license=GPL-3
+license=GPL-3.0-or-later
