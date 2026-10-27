@@ -79,7 +79,7 @@ Comprehensive correctness + UX revision. Existing single-tool structure preserve
 
 ## [1.3.1] - 2026
 
-- Standardized Plugin Hub metadata, updated contact email, added DEU educational context, and refreshed the stable release package.
+- Standardized Plugin Hub metadata, updated contact email, added educational context, and refreshed the stable release package.
 
 ## [1.3.0]
 
