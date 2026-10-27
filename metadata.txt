@@ -15,6 +15,7 @@ repository=https://gitlab.com/geophilo1/EasyFillet
 ; start of optional metadata
 category=Vector
 changelog=
+    1.4.14 - Hub listing text rewritten; author Geophilo; university affiliation removed; documentation links use the standard geophilo.com pages (manual.html, guide/); manual HTML no longer ships in the plugin package.
     EasyFillet 1.4.13 - Upgraded official plugin icon to high-end tactile 3D brand identity with circular teal pedestal; prioritized PNG icon loading and verified GeoPhilo documentation links.
     EasyFillet 1.4.12 - Fixed missing toolbar ribbon icon by loading SVG with PNG fallback.
     EasyFillet 1.4.0 - Comprehensive correctness + UX revision (no new sub-panels, existing structure preserved).
