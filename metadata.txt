@@ -7,7 +7,7 @@ qgisMinimumVersion=3.0
 description=Join two line segments with a true tangent arc: preview the radius, and the originals are trimmed so they meet the arc at shared nodes.
 about=EasyFillet does one drafting job well. Pick two line segments, set or preview a radius, and it draws the tangent arc and trims both lines so they meet it at clean, shared nodes, ready for topology and further editing. Useful for road edges, kerbs, parcel corners and any plan drawing that needs rounded joins. For a full drafting toolset, see CAD Drafting Toolset.
     Manual: https://geophilo.com/EasyFillet/manual.html
-version=1.4.13
+version=1.4.14
 tracker=https://gitlab.com/geophilo1/EasyFillet/-/issues
 repository=https://gitlab.com/geophilo1/EasyFillet
 ; end of mandatory metadata
